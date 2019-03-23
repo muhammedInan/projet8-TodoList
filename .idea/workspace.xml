@@ -1,87 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="3d3f7d8e-8625-4b7e-a5e4-e1738acd9f17" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.env" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/php.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/projet8-TodoList-master.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/.htaccess" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/AppCache.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/AppKernel.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/Resources/views/base.html.twig" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/Resources/views/default/index.html.twig" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/Resources/views/security/login.html.twig" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/Resources/views/task/create.html.twig" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/Resources/views/task/edit.html.twig" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/Resources/views/task/list.html.twig" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/Resources/views/user/create.html.twig" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/Resources/views/user/edit.html.twig" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/Resources/views/user/list.html.twig" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/autoload.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/config/config.yml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/config/config_dev.yml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/config/config_prod.yml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/config/config_test.yml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/config/parameters.yml.dist" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/config/routing.yml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/config/routing_dev.yml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/config/security.yml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/config/services.yml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bin/console" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bin/symfony_requirements" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/composer.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/composer.lock" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/config/bundles.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/config/packages/doctrine.yaml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/config/packages/prod/doctrine.yaml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/config/packages/security_checker.yaml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/config/routes/annotations.yaml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/phpunit.xml.dist" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/.htaccess" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/AppBundle/AppBundle.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/AppBundle/Controller/DefaultController.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/AppBundle/Controller/SecurityController.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/AppBundle/Controller/TaskController.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/AppBundle/Controller/UserController.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/AppBundle/DataFixtures/LoadFixtures.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/AppBundle/Entity/Task.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/AppBundle/Entity/User.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/AppBundle/Form/TaskType.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/AppBundle/Form/UserType.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Entity/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Repository/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/symfony.lock" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tests/AppBundle/Controller/DefaultControllerTest.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/var/SymfonyRequirements.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/var/cache/.gitkeep" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/var/logs/.gitkeep" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/var/sessions/.gitkeep" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/web/.htaccess" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/web/app.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/web/app_dev.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/web/apple-touch-icon.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/web/config.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/web/css/bootstrap.min.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/web/css/shop-homepage.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/web/favicon.ico" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/web/fonts/glyphicons-halflings-regular.eot" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/web/fonts/glyphicons-halflings-regular.svg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/web/fonts/glyphicons-halflings-regular.ttf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/web/fonts/glyphicons-halflings-regular.woff" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/web/fonts/glyphicons-halflings-regular.woff2" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/web/img/Logo_OpenClassrooms.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/web/img/todolist_content.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/web/img/todolist_homepage.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/web/js/bootstrap.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/web/js/bootstrap.min.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/web/robots.txt" afterDir="false" />
-    </list>
+    <list default="true" id="3d3f7d8e-8625-4b7e-a5e4-e1738acd9f17" name="Default Changelist" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -444,12 +364,12 @@
       <workItem from="1553016725365" duration="924000" />
       <workItem from="1553180711301" duration="434000" />
       <workItem from="1553181390351" duration="235000" />
-      <workItem from="1553358006755" duration="369000" />
+      <workItem from="1553358006755" duration="617000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="25543000" />
+    <option name="totallyTimeSpent" value="25791000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1616" height="876" extended-state="6" />
