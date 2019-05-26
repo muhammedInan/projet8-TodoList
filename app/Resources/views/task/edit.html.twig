@@ -1,11 +1,14 @@
-{% extends 'base.html.twig' %}
+{% extends 'task/create.html.twig' %}
 
-{% block body %}
-    <div class="row">
-        {{ form_start(form, {'action' : path('task_edit', { 'id' : task.id })}) }}
-        {{ form_widget(form) }}
+{% block author %}
+	{% if task.user.id is not defined %}
+        <em>Auteur : Anonyme</em>
+    {% else %}
+        <em>Publiée par {{ task.user.username }}</em>
+    {% endif %}
+{% endblock %}
 
-        <button type="submit" class="btn btn-success pull-right">Modifier</button>
-        {{ form_end(form) }}
-    </div>
+{% block button %}
+	<input type="submit" class="btn btn-success" value="Modifier">
+	<a href="{{ path('task_list') }}" class="btn btn-primary">Retour à la liste des tâches</a>
 {% endblock %}

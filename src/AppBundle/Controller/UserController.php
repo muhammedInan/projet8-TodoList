@@ -7,6 +7,8 @@ use AppBundle\Form\UserType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+
 
 class UserController extends Controller
 {
@@ -20,6 +22,7 @@ class UserController extends Controller
 
     /**
      * @Route("/users/create", name="user_create")
+     
      */
     public function createAction(Request $request)
     {

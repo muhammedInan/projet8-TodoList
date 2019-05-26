@@ -8,6 +8,7 @@ services:
 #        class: AppBundle\Directory\ClassName
 #        arguments: ["@another_service_name", "plain_value", "%parameter_name%"]
 
-#AppBundle\DataFixtures\:
-#  resource: '../../src/AppBundle/DataFixtures'
-#  tags: ['doctrine.fixture.orm']
+  AppBundle\DataFixtures\:
+    resource: '../../src/AppBundle/DataFixtures'
+    tags: ['doctrine.fixture.orm']
+

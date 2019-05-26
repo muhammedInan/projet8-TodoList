@@ -17,6 +17,7 @@
                     <th>#</th>
                     <th>Nom d'utilisateur</th>
                     <th>Adresse d'utilisateur</th>
+                    <th>Rôle</th>
                     <th>Actions</th>
                 </tr>
                 </thead>
@@ -26,15 +27,25 @@
                         <th scope="row">{{ loop.index }}</th>
                         <td>{{ user.username }}</td>
                         <td>{{ user.email }}</td>
-                        {% if is_granted('ROLE_ADMIN') %}
-                            <td>
-                                <a href="{{ path('user_edit', {'id' : user.id}) }}" class="btn btn-success btn-sm">Edit</a>
-                            </td>
-                        {% endif %}
+                        <td>
+                            {% for role in user.roles %}
+                                {% if role is same as ('ROLE_USER') %}
+                                    <span class="btn btn-info btn-sm">Utilisateur</span>
+                                {% elseif role is same as ('ROLE_ADMIN') %}
+                                    <span class="btn btn-info btn-sm">Administrateur</span>
+                                {% endif %}
+                            {% endfor %}
+                                
+                        </td>
+                        <td>
+                            <a href="{{ path('user_edit', {'id' : user.id}) }}" class="btn btn-success btn-sm">Edit</a>
+                        </td>
                     </tr>
                 {% endfor %}
                 </tbody>
             </table>
+            <hr>
+            <a href="{{ path('user_create') }}" class="btn btn-primary pull-right">Créer un nouvel utilisateur</a>
         </div>
     {% endif %}
 {% endblock %}
