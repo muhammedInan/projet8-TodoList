@@ -2,17 +2,35 @@
 
 namespace Tests\AppBundle\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class DefaultControllerTest extends WebTestCase
 {
+    /**
+     * {@inheritDoc}
+     */
+    public function setUp()
+    {
+        parent::setUp();
+
+        $this->loadFixturesForTests();
+    }
+
     public function testIndex()
     {
-        $client = static::createClient();
-
+        $client = static::createClient(array(), array(
+            'PHP_AUTH_USER' => 'Username',
+            'PHP_AUTH_PW' => 'pass_1234',
+        ));
         $crawler = $client->request('GET', '/');
+        $this->assertEquals(302, $client->getResponse()->getStatusCode());
+        $this->assertContains('Bienvenue sur Todo List', $crawler->filter('h1')->text());
+    }
 
-        $this->assertEquals(200, $client->getResponse()->getStatusCode());
-        $this->assertContains('Welcome to Symfony', $crawler->filter('#container h1')->text());
+    /**
+     * {@inheritDoc}
+     */
+    protected function tearDown()
+    {
+        parent::tearDown();
     }
 }

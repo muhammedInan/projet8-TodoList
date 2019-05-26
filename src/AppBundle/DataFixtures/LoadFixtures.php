@@ -1,55 +1,117 @@
 <?php
 
+/*
+ * This file is part of the Symfony package.
+ *
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 namespace AppBundle\DataFixtures;
 
-use Doctrine\Common\DataFixtures\AbstractFixture;
-use Doctrine\Common\Persistence\ObjectManager;
 use AppBundle\Entity\Task;
 use AppBundle\Entity\User;
+use Doctrine\Common\DataFixtures\FixtureInterface;
+use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use PHPUnit\Framework\TestCase;
 
-/**
- * @codeCoverageIgnore
- */
-class LoadFixtures extends AbstractFixture implements ContainerAwareInterface
+class LoadFixtures implements FixtureInterface, ContainerAwareInterface
 {
+    /**
+     * @var ContainerInterface
+     */
     private $container;
+
+    /**
+     * @param ContainerInterface|null $container
+     */
     public function setContainer(ContainerInterface $container = null)
     {
         $this->container = $container;
     }
+
+    /**
+     * @return object
+     */
+    public function getEntityManager()
+    {
+        return $this->container->get('doctrine.orm.entity_manager');
+    }
+
+    /**
+     * @return object
+     */
+    public function getSecurityPasswordEncoder()
+    {
+        return $this->container->get('security.password_encoder');
+    }
+    // Dans l'argument de la méthode load, l'objet $manager est l'EntityManager
+    /**
+     * @param $username
+     * @param $email
+     * @param $role
+     * @param $password
+     * @return User
+     */
+    protected function createUserForDemo($username, $email, $roles, $password)
+    {
+        $user = new User;
+        $user->setUsername($username);
+        $user->setEmail($email);
+        $user->setRoles($roles);
+       
+        $passwordEncoder = $this->getSecurityPasswordEncoder();
+        $passwordEncode = $passwordEncoder->encodePassword($user, $password);
+        $user->setPassword($passwordEncode);
+        $this->getEntityManager()->persist($user);
+        $this->getEntityManager()->flush();
+        return $user;
+    }
+    /**
+     * @param $title
+     * @param $content
+     * @param $user
+     * @return Task
+     */
+    protected function createTaskForDemo($title, $content, $user)
+    {
+        $task = new Task;
+        $task->setTitle($title);
+        $task->setContent($content);
+        $task->setUser($user);
+        $this->getEntityManager()->persist($task);
+        $this->getEntityManager()->flush();
+        return $task;
+    }
+    /**
+     * @param ObjectManager $manager
+     */
     public function load(ObjectManager $manager)
     {
-        $encoder = $this->container->get('security.password_encoder');
-        $admin = new User();
-        $admin->setUsername('admin');
-        $admin->setPassword($encoder->encodePassword($admin, 'admin'));
-        $admin->setEmail('admin@admin.com');
-        $admin->setRoles(array('ROLE_ADMIN'));
-        $manager->persist($admin);
-        $user = new User();
-        $user->setUsername('user');
-        $user->setPassword($encoder->encodePassword($user, 'user'));
-        $user->setEmail('user@user.com');
-        $user->setRoles(array('ROLE_USER'));
+        //Users
+        $user = $this->createUserForDemo('user', 'user@example.com', 'ROLE_USER', 'password');
+        $admin = $this->createUserForDemo('admin', 'admin@example.com', 'ROLE_ADMIN', 'password');
+        $user1 = $this->createUserForDemo('Lisy', 'lisy@example.com', 'ROLE_USER', 'password');
+        $user2 = $this->createUserForDemo('Anna', 'anna@example.com', 'ROLE_ADMIN', 'password');
+        $user3 = $this->createUserForDemo('Tally', 'tally@example.com', 'ROLE_USER', 'password');
         $manager->persist($user);
-        // Create Task without User
-        $taskNoUser = new Task();
-        $taskNoUser->setTitle('Tâche sans Utilisateur');
-        $taskNoUser->setContent('Cette tâche ne possède aucun utilisateur.');
-        $manager->persist($taskNoUser);
-        $task = new Task();
-        $task->setTitle('Tâche avec Utilisateur');
-        $task->setContent('Cette tâche possède un utilisateur.');
-        $task->setUser($user);
-        $manager->persist($task);
-        $taskadmin = new Task();
-        $taskadmin->setTitle('Tâche avec Administrateur');
-        $taskadmin->setContent('Cette tâche possède un Administrateur.');
-        $taskadmin->setUser($admin);
-        $manager->persist($taskadmin);
+        $manager->persist($admin);
+        $manager->persist($user1);
+        $manager->persist($user2);
+        $manager->persist($user3);
+        //Tasks
+        $task1 = $this->createTaskForDemo('1ère tâche', 'Contenu de la 1ère tâche.', $user1);
+        $task2 = $this->createTaskForDemo('2ème tâche', 'Contenu de la 2ème tâche.', $user2);
+        $task3 = $this->createTaskForDemo('3ème tâche', 'Contenu de la 3ème tâche.', null);
+        $task4 = $this->createTaskForDemo('4ème tâche', 'Contenu de la 4ème tâche.', $user1);
+        $task5 = $this->createTaskForDemo('5ème tâche', 'Contenu de la 5ème tâche.', $user3);
+        $manager->persist($task1);
+        $manager->persist($task2);
+        $manager->persist($task3);
+        $manager->persist($task4);
+        $manager->persist($task5);
+        // On déclenche l'enregistrement
         $manager->flush();
     }
 }
