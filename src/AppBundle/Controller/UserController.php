@@ -8,7 +8,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class UserController extends Controller
 {
@@ -27,15 +27,13 @@ class UserController extends Controller
     public function createAction(Request $request)
     {
         $user = new User();
-
         $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
 
-        if ($form->isValid()) {
+        if ($form->isValid() && $form->isSubmitted()) {
             $entityManager = $this->getDoctrine()->getManager();
             $password = $this->get('security.password_encoder')->encodePassword($user, $user->getPassword());
             $user->setPassword($password);
-
             $entityManager->persist($user);
             $entityManager->flush();
 

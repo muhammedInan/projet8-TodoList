@@ -45,7 +45,7 @@ class WebTestCase extends BaseWebTestCase
         $encoded = $encoder->encodePassword($user, 'pass_1234');
         $user->setPassword($encoded);
         $user->setEmail('email@example.com');
-        $user->setRoles(['ROLE_USER']);
+        $user->setRoles('ROLE_USER');
         $this->entityManager->persist($user);
         $admin = new User();
         $admin->setUsername('Admin');
@@ -53,7 +53,7 @@ class WebTestCase extends BaseWebTestCase
         $encoded = $encoder->encodePassword($admin, 'pass_1234');
         $admin->setPassword($encoded);
         $admin->setEmail('admin@example.com');
-        $admin->setRoles(['ROLE_ADMIN']);
+        $admin->setRoles('ROLE_ADMIN');
         $this->entityManager->persist($admin);
         $task = new Task();
         $task->setTitle('Un titre de test');

@@ -17,13 +17,12 @@ class DefaultControllerTest extends WebTestCase
 
     public function testIndex()
     {
-        $client = static::createClient(array(), array(
-            'PHP_AUTH_USER' => 'Username',
-            'PHP_AUTH_PW' => 'pass_1234',
-        ));
+        $client = static::createClient();
         $crawler = $client->request('GET', '/');
+        
         $this->assertEquals(302, $client->getResponse()->getStatusCode());
-        $this->assertContains('Bienvenue sur Todo List', $crawler->filter('h1')->text());
+        $this->assertContains('login', $client->getResponse()->getContent());
+        
     }
 
     /**

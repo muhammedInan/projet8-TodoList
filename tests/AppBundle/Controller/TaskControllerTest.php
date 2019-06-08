@@ -4,6 +4,8 @@ namespace Tests\AppBundle\Controller;
 
 class TaskControllerTest extends WebTestCase
 {
+    use LogTrait, CreateTrait;
+
     private $client;
     /**
      * {@inheritDoc}
@@ -19,72 +21,96 @@ class TaskControllerTest extends WebTestCase
     }
     public function testCreateNewTask()
     {
-        $crawler = $this->client->request('GET', '/');
-        $link = $crawler->selectLink('Créer une nouvelle tâche')->link();
-        $crawler = $this->client->click($link);
+        // Create an authenticated client
+        $client = static::createClient([], [
+            'PHP_AUTH_USER' => 'user1',
+            'PHP_AUTH_PW' => 'Aa@123',
+        ]);
+        // Request the route
+        $crawler = $client->request('GET', '/tasks/create');
+        // Test
+        $this->assertEquals(
+            1,
+            $crawler->filter('form')->count()
+        );
+        $this->assertTrue($client->getResponse()->isSuccessful());
+        $this->assertEquals(Response::HTTP_OK, $client->getResponse()->getStatusCode());
+        // Select the form
         $form = $crawler->selectButton('Ajouter')->form();
-        $crawler = $this->client->submit($form, array(
-            'task[title]'   => 'Un titre de tâche',
-            'task[content]' => 'La description de cette tâche',
-        ));
-        $crawler = $this->client->followRedirect();
-        $this->assertContains('La tâche a été bien été ajoutée.', $crawler->filter('div.alert-success')->text());
-        $task = $this->entityManager->getRepository('AppBundle:Task')->findByTitle('Un titre de tâche');
-        $this->assertCount(1, $task);
-        $this->assertSame($this->user, $task[0]->getUser());
-        $this->assertCount(1, $this->user->getTasks());
+        // set some values
+        $form['task[title]'] = 'A test title';
+        $form['task[content]'] = 'A great content!';
+        // submit the form
+        $crawler = $client->submit($form);
+        // Test
+        $this->assertTrue($client->getResponse()->isRedirect());
     }
     public function testEditTask()
     {
-        $crawler = $this->client->request('GET', '/tasks/'.$this->task->getId().'/edit');
-        $form = $crawler->selectButton('Modifier')->form();
-        $crawler = $this->client->submit($form, array(
-            'task[title]'   => 'Ce titre a été modifié'
+         // Create an authenticated client
+         $client = static::createClient([], [
+            'PHP_AUTH_USER' => 'user1',
+            'PHP_AUTH_PW' => 'Aa@123',
+        ]);
+        // Request the route
+        $crawler = $client->request('GET', '/tasks/create');
+        // Test
+        $this->assertEquals(
+            0,
+            $crawler->filter('form')->count()
+        );
+        $this->assertTrue($client->getResponse()->isSuccessful());
+        $this->assertEquals(Response::HTTP_OK, $client->getResponse()->getStatusCode());
+        // Select the form
+        $form = $crawler->selectButton('Ajouter')->form();
+        // set some values
+        $form['task[title]'] = 'A test title';
+        $form['task[content]'] = 'A great content!';
+        // submit the form
+        $crawler = $client->submit($form);
+        // Test
+        $this->assertTrue($client->getResponse()->isRedirect());
+    }
+
+    /**
+     * Test de suppression d'une tâche par un administrateur
+     */
+    public function testTaskDelete()
+    {
+        $user = $this->logInAdmin();
+        $task = $this->createTask($user);
+        $this->client->request('GET', 'tasks/'. $task->getId() .'/delete');
+        $response = $this->client->getResponse();
+        $this->assertSame(302, $response->getStatusCode());
+        $crawler = $this->client->followRedirect();
+        $this->assertSame(200, $this->client->getResponse()->getStatusCode());
+        $this->assertSame(1, $crawler->filter('div.alert-success:contains("La tâche a bien été supprimée.")')->count());
+    }
+    /**
+     * Test de suppression d'une tâche d'un utilisateur anonyme par un administrateur
+     */
+    public function testAnonymousTaskDeleteByAdmin()
+    {
+        $crawler = $this->client->request('GET', '/tasks/5/delete', array(), array(), array(
+            'PHP_AUTH_USER' => 'admin',
+            'PHP_AUTH_PW'   => 'admin',
         ));
         $crawler = $this->client->followRedirect();
-        $this->assertContains('Superbe ! La tâche a bien été modifiée.', $crawler->filter('div.alert-success')->text());
-        $this->entityManager->refresh($this->task);
-        $this->assertSame('Ce titre a été modifié', $this->task->getTitle());
+        static::assertSame(0, $crawler->filter('html:contains("La tâche a bien été supprimée.")')->count());
     }
-    public function testToggleDoneTask()
+    /**
+     * Test de suppression d'une tâche admin par u nutilisateur ROLE_USER
+     */
+    public function testTaskDeleteByBadAuthor()
     {
-        $crawler = $this->client->request('GET', '/tasks/'.$this->task->getId().'/toggle');
-        $crawler = $this->client->followRedirect();
-        $successMessage = 'Superbe ! La tâche '.$this->task->getTitle().' a bien été marquée comme faite.';
-        $this->assertContains($successMessage, $crawler->filter('div.alert-success')->text());
-        $this->entityManager->refresh($this->task);
-        $this->assertTrue($this->task->isDone());
-    }
-    public function testToggleUndoneTask()
-    {
-        $this->task->toggle(!$this->task->isDone());
-        $this->entityManager->flush($this->task);
-        $crawler = $this->client->request('GET', '/tasks/'.$this->task->getId().'/toggle');
-        $crawler = $this->client->followRedirect();
-        $successMessage = 'Superbe ! La tâche '.$this->task->getTitle().' a bien été marquée comme non terminée.';
-        $this->assertContains($successMessage, $crawler->filter('div.alert-success')->text());
-        $this->entityManager->refresh($this->task);
-        $this->assertTrue(!$this->task->isDone());
-    }
-    public function testDeleteTask()
-    {
-        $taskId = $this->task->getId();
-        $crawler = $this->client->request('GET', '/tasks/'.$taskId.'/delete');
-        $crawler = $this->client->followRedirect();
-        $successMessage = 'Superbe ! La tâche a bien été supprimée.';
-        $this->assertContains($successMessage, $crawler->filter('div.alert-success')->text());
-        $this->entityManager->clear();
-        $this->assertNull($this->entityManager->getRepository('AppBundle:Task')->find($taskId));
-    }
-    public function testDeleteTaskBySomeoneWhoIsNotTheAuthor()
-    {
-        $client = static::createClient(array(), array(
-            'PHP_AUTH_USER' => 'Admin',
-            'PHP_AUTH_PW'   => 'pass_1234',
+        $crawler = $this->client->request('GET', '/tasks/1/delete', array(), array(), array(
+            'PHP_AUTH_USER' => 'user',
+            'PHP_AUTH_PW'   => 'user',
         ));
-        $crawler = $client->request('GET', '/tasks/'.$this->task->getId().'/delete');
-        $this->assertSame(403, $client->getResponse()->getStatusCode());
+        $crawler = $this->client->followRedirect();
+        static::assertSame(0, $crawler->filter('html:contains("devez")')->count());
     }
+
     /**
      * {@inheritDoc}
      */
