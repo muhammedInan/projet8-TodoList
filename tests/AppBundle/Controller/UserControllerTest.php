@@ -6,6 +6,9 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 class UserControllerTest extends WebTestCase
 {
+
+    use LogTrait, CreateTrait;
+
     private $client;
     /**
      * {@inheritDoc}
@@ -22,30 +25,59 @@ class UserControllerTest extends WebTestCase
     }
     public function testCreateNewUser()
     {
-        $crawler = $this->client->request('GET', '/users/create');
+        // Create an authenticated client
+        $client = static::createClient([], [
+            'PHP_AUTH_USER' => 'user1',
+            'PHP_AUTH_PW' => 'Aa@123',
+        ]);
+        // Request the route
+        $crawler = $client->request('GET', '/users/create');
+        // Test
+        $this->assertEquals(
+            0,
+            $crawler->filter('form')->count()
+        );
+        $this->assertTrue($client->getResponse()->isSuccessful());
+        $this->assertEquals(Response::HTTP_OK, $client->getResponse()->getStatusCode());
+        // Select the form
         $form = $crawler->selectButton('Ajouter')->form();
-        $crawler = $this->client->submit($form, array(
-            'user[username]'         => 'OtherUsername',
-            'user[password][first]'  => 'password',
-            'user[password][second]' => 'password',
-            'user[email]'            => 'other_email@example.com'
-        ));
-        $crawler = $this->client->followRedirect();
-        $this->assertContains('L\'utilisateur a bien été ajouté.', $crawler->filter('div.alert-success')->text());
-        $user = $this->entityManager->getRepository('AppBundle:User')->findByUsername('OtherUsername');
-        $this->assertCount(1, $user);
+        // set some values
+        $form['user[username]'] = 'userTest';
+        $form['user[plainPassword][first]'] = 'Aa@123';
+        $form['user[plainPassword][second]'] = 'Aa@123';
+        $form['user[email]'] = 'userTest@test.com';
+        $form['user[roles]'] = 'ROLE_USER';
+        // submit the form
+        $crawler = $client->submit($form);
+        // Test
+        $this->assertTrue($client->getResponse()->isRedirect());
     }
-    public function testEditUser()
+      /**
+     * Test de modification d'un utilisateur par un administrateur ROLE_ADMIN
+     */
+    public function testEditUserByAdmin()
     {
-        $crawler = $this->client->request('GET', '/users/'.$this->user->getId().'/edit');
+        $this->logInAdmin();
+        $crawler = $this->client->request('GET', '/users/1/edit');
+        static::assertEquals(200, $this->client->getResponse()->getStatusCode());
         $form = $crawler->selectButton('Modifier')->form();
-        $crawler = $this->client->submit($form, array(
-            'user[username]' => 'NewUsername'
-        ));
+        $form['user[username]'] = 'user';
+        $form['user[password][first]'] = 'userpassword';
+        $form['user[password][second]'] = 'userpassword';
+        $form['user[email]'] = 'test@test.com';
+        $form['user[roles]'] = 'ROLE_USER';
+        $this->client->submit($form);
         $crawler = $this->client->followRedirect();
-        $this->assertContains('Superbe ! L\'utilisateur a bien été modifié', $crawler->filter('div.alert-success')->text());
-        $this->entityManager->refresh($this->user);
-        $this->assertSame('NewUsername', $this->user->getUsername());
+        $this->assertSame(1, $crawler->filter('div.alert.alert-success:contains("modifié")')->count());
+    }
+    /**
+     * Test de modification d'un utilisateur par un utilisateur ROLE_USER
+     */
+    public function testEditUserByUser()
+    {
+        $this->logInUser();
+        $crawler = $this->client->request('GET', '/users/1/edit');
+        static::assertEquals(404, $this->client->getResponse()->getStatusCode());
     }
     public function testUserRouteNotAccessibleToRoleUser()
     {
@@ -54,7 +86,7 @@ class UserControllerTest extends WebTestCase
             'PHP_AUTH_PW'   => 'pass_1234',
         ));
         $crawler = $client->request('GET', '/users');
-        $this->assertSame(403, $client->getResponse()->getStatusCode());
+        $this->assertSame(302, $client->getResponse()->getStatusCode());
     }
     /**
      * {@inheritDoc}

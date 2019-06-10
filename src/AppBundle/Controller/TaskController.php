@@ -1,5 +1,6 @@
 <?php
 namespace AppBundle\Controller;
+
 use AppBundle\Entity\Task;
 use AppBundle\Form\TaskType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -15,34 +16,15 @@ class TaskController extends Controller
         return $this->render('task/list.html.twig', ['tasks' => $this->getDoctrine()->getRepository('AppBundle:Task')->findAll()]);
     }
 
-    /**
+    
+    /** 
      * @Route("/tasks/done", name="task_list_done")
-     * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function listDoneAction()
+    public function listActionDone()
     {
-        return $this->render(
-            'task/list.html.twig',
-            array(
-                'tasks' => $this->getDoctrine()->getRepository('AppBundle:Task')->getDone(),
-                'user' => $this->getUser()
-            )
-        );
+        return $this->render('task/list.html.twig', ['tasks' => $this->getDoctrine()->getRepository('AppBundle:Task')->findByTasksDone()]);
     }
-    /**
-     * @Route("/tasks/todo", name="task_list_todo")
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-    public function listTodoAction()
-    {
-        return $this->render(
-            'task/list.html.twig',
-            array(
-                'tasks' => $this->getDoctrine()->getRepository('AppBundle:Task')->getTodo(),
-                'user' => $this->getUser()
-            )
-        );
-    }
+
     /**
      * @Route("/tasks/create", name="task_create")
      */
