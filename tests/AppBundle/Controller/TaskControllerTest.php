@@ -42,6 +42,7 @@ class TaskControllerTest extends WebTestCase
         $form['task[content]'] = 'A great content!';
         // submit the form
         $crawler = $client->submit($form);
+        $crawler = $client->followRedirect();
         // Test
         $this->assertTrue($client->getResponse()->isRedirect());
     }
@@ -68,6 +69,7 @@ class TaskControllerTest extends WebTestCase
         $form['task[content]'] = 'A great content!';
         // submit the form
         $crawler = $client->submit($form);
+        $crawler = $client->followRedirect();
         // Test
         $this->assertTrue($client->getResponse()->isRedirect());
     }
