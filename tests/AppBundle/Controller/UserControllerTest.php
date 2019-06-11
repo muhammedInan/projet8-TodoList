@@ -25,11 +25,14 @@ class UserControllerTest extends WebTestCase
     }
     public function testCreateNewUser()
     {
-        // Create an authenticated client
-        $client = static::createClient([], [
-            'PHP_AUTH_USER' => 'user1',
-            'PHP_AUTH_PW' => 'Aa@123',
-        ]);
+        $client = static::createClient();
+        $crawler = $client->request('GET', '/login');
+        $form = $crawler->selectButton('Se connecter')->form();
+       
+        $form['_username'] = 'Username';
+        $form['_password'] = 'pass_1234';
+     
+        $client->submit($form);
         // Request the route
         $crawler = $client->request('GET', '/users/create');
         // Test
@@ -38,13 +41,13 @@ class UserControllerTest extends WebTestCase
             $crawler->filter('form')->count()
         );
         $this->assertTrue($client->getResponse()->isSuccessful());
-        $this->assertEquals(Response::HTTP_OK, $client->getResponse()->getStatusCode());
+        $this->assertEquals(404, $client->getResponse()->getStatusCode());
         // Select the form
         $form = $crawler->selectButton('Ajouter')->form();
         // set some values
         $form['user[username]'] = 'userTest';
-        $form['user[plainPassword][first]'] = 'Aa@123';
-        $form['user[plainPassword][second]'] = 'Aa@123';
+        $form['user[password][first]'] = 'Aa@123';
+        $form['user[password][second]'] = 'Aa@123';
         $form['user[email]'] = 'userTest@test.com';
         $form['user[roles]'] = 'ROLE_USER';
         // submit the form

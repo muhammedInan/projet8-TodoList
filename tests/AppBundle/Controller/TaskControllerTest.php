@@ -21,11 +21,14 @@ class TaskControllerTest extends WebTestCase
     }
     public function testCreateNewTask()
     {
-        // Create an authenticated client
-        $client = static::createClient([], [
-            'PHP_AUTH_USER' => 'user1',
-            'PHP_AUTH_PW' => 'Aa@123',
-        ]);
+        $client = static::createClient();
+        $crawler = $client->request('GET', '/login');
+        $form = $crawler->selectButton('Se connecter')->form();
+       
+        $form['_username'] = 'Username';
+        $form['_password'] = 'pass_1234';
+     
+        $client->submit($form);
         // Request the route
         $crawler = $client->request('GET', '/tasks/create');
         // Test
@@ -34,7 +37,7 @@ class TaskControllerTest extends WebTestCase
             $crawler->filter('form')->count()
         );
         $this->assertTrue($client->getResponse()->isSuccessful());
-        $this->assertEquals(Response::HTTP_OK, $client->getResponse()->getStatusCode());
+        $this->assertEquals(200, $client->getResponse()->getStatusCode());
         // Select the form
         $form = $crawler->selectButton('Ajouter')->form();
         // set some values
@@ -48,20 +51,23 @@ class TaskControllerTest extends WebTestCase
     }
     public function testEditTask()
     {
-         // Create an authenticated client
-         $client = static::createClient([], [
-            'PHP_AUTH_USER' => 'user1',
-            'PHP_AUTH_PW' => 'Aa@123',
-        ]);
+        $client = static::createClient();
+        $crawler = $client->request('GET', '/login');
+        $form = $crawler->selectButton('Se connecter')->form();
+       
+        $form['_username'] = 'Username';
+        $form['_password'] = 'pass_1234';
+     
+        $client->submit($form);
         // Request the route
         $crawler = $client->request('GET', '/tasks/create');
         // Test
         $this->assertEquals(
-            0,
+            1,
             $crawler->filter('form')->count()
         );
         $this->assertTrue($client->getResponse()->isSuccessful());
-        $this->assertEquals(Response::HTTP_OK, $client->getResponse()->getStatusCode());
+        $this->assertEquals(200, $client->getResponse()->getStatusCode());
         // Select the form
         $form = $crawler->selectButton('Ajouter')->form();
         // set some values

@@ -19,6 +19,8 @@ class TaskController extends Controller
     
     /** 
      * @Route("/tasks/done", name="task_list_done")
+     * @codeCoverageIgnoreStart
+     * @codeCoverageIgnoreEnd
      */
     public function listActionDone()
     {
