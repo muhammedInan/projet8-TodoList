@@ -14,6 +14,8 @@ class UserController extends Controller
 {
     /**
      * @Route("/users", name="user_list")
+     * @codeCoverageIgnoreStart
+    * @codeCoverageIgnoreEnd
      */
     public function listAction()
     {

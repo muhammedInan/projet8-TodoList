@@ -9,6 +9,10 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
+/*
+ * @codeCoverageIgnoreStart
+ * @codeCoverageIgnoreEnd
+ */
 class LoadFixtures implements FixtureInterface, ContainerAwareInterface
 {
     /**
