@@ -14,8 +14,9 @@ class UserController extends Controller
 {
     /**
      * @Route("/users", name="user_list")
+     * @Security ("has_role ('ROLE_ADMIN')") 
      * @codeCoverageIgnoreStart
-    * @codeCoverageIgnoreEnd
+     * @codeCoverageIgnoreEnd
      */
     public function listAction()
     {

@@ -1,16 +1,13 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: philippe traon
- * Date: 13/10/2018
- * Time: 10:55
- */
+/
 namespace Tests\AppBundle\Controller;
+
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\BrowserKit\Cookie;
 use AppBundle\Entity\User;
 use AppBundle\Entity\Task;
+
 trait CreateTrait
 {
     private $client;
