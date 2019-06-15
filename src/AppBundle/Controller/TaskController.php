@@ -6,6 +6,7 @@ use AppBundle\Form\TaskType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+
 class TaskController extends Controller
 {
     /**
@@ -16,7 +17,7 @@ class TaskController extends Controller
         return $this->render('task/list.html.twig', ['tasks' => $this->getDoctrine()->getRepository('AppBundle:Task')->findAll()]);
     }
 
-    
+
     /** 
      * @Route("/tasks/done", name="task_list_done")
      * @codeCoverageIgnoreStart
@@ -45,6 +46,7 @@ class TaskController extends Controller
         }
         return $this->render('task/create.html.twig', ['form' => $form->createView()]);
     }
+
     /**
      * @Route("/tasks/{id}/edit", name="task_edit")
      */
@@ -62,6 +64,7 @@ class TaskController extends Controller
             'task' => $task,
         ]);
     }
+
     /**
      * @Route("/tasks/{id}/toggle", name="task_toggle")
      */
@@ -77,13 +80,14 @@ class TaskController extends Controller
         }
         return $this->redirectToRoute('task_list');
     }
+    
     /**
      * @Route("/tasks/{id}/delete", name="task_delete")
      */
     public function deleteTaskAction(Task $task)
     {
-        if (($task->getUser() !== null && $task->getUser() !== $this->getUser()) || 
-            ($task->getUser() === null && !$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN'))) {
+        if (($task->getUser() !== null && $task->getUser() !== $this->getUser()) || ($task->getUser() === null && !$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN'))
+        ) {
             throw $this->createAccessDeniedException('You cannot access this page!');
         }
         $entityManager = $this->getDoctrine()->getManager();

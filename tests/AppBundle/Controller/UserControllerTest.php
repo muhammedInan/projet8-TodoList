@@ -28,10 +28,10 @@ class UserControllerTest extends WebTestCase
         $client = static::createClient();
         $crawler = $client->request('GET', '/login');
         $form = $crawler->selectButton('Se connecter')->form();
-       
+
         $form['_username'] = 'Username';
         $form['_password'] = 'pass_1234';
-     
+
         $client->submit($form);
         // Request the route
         $crawler = $client->request('GET', '/users/create');
@@ -55,7 +55,7 @@ class UserControllerTest extends WebTestCase
         // Test
         $this->assertTrue($client->getResponse()->isRedirect());
     }
-      /**
+    /**
      * Test de modification d'un utilisateur par un administrateur ROLE_ADMIN
      */
     public function testEditUserByAdmin()

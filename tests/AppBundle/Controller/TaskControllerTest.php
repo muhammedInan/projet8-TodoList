@@ -17,17 +17,16 @@ class TaskControllerTest extends WebTestCase
             'PHP_AUTH_USER' => 'Username',
             'PHP_AUTH_PW'   => 'pass_1234',
         ));
-      
     }
     public function testCreateNewTask()
     {
         $client = static::createClient();
         $crawler = $client->request('GET', '/login');
         $form = $crawler->selectButton('Se connecter')->form();
-       
+
         $form['_username'] = 'Username';
         $form['_password'] = 'pass_1234';
-     
+
         $client->submit($form);
         // Request the route
         $crawler = $client->request('GET', '/tasks/create');
@@ -54,10 +53,10 @@ class TaskControllerTest extends WebTestCase
         $client = static::createClient();
         $crawler = $client->request('GET', '/login');
         $form = $crawler->selectButton('Se connecter')->form();
-       
+
         $form['_username'] = 'Username';
         $form['_password'] = 'pass_1234';
-     
+
         $client->submit($form);
         // Request the route
         $crawler = $client->request('GET', '/tasks/create');
@@ -87,7 +86,7 @@ class TaskControllerTest extends WebTestCase
     {
         $user = $this->logInAdmin();
         $task = $this->createTask($user);
-        $this->client->request('GET', 'tasks/'. $task->getId() .'/delete');
+        $this->client->request('GET', 'tasks/' . $task->getId() . '/delete');
         $response = $this->client->getResponse();
         $this->assertSame(302, $response->getStatusCode());
         $crawler = $this->client->followRedirect();

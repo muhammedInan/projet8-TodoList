@@ -43,6 +43,7 @@ class LoadFixtures implements FixtureInterface, ContainerAwareInterface
     {
         return $this->container->get('security.password_encoder');
     }
+
     // Dans l'argument de la méthode load, l'objet $manager est l'EntityManager
     /**
      * @param $username
@@ -65,6 +66,7 @@ class LoadFixtures implements FixtureInterface, ContainerAwareInterface
         $this->getEntityManager()->flush();
         return $user;
     }
+
     /**
      * @param $title
      * @param $content
@@ -81,6 +83,7 @@ class LoadFixtures implements FixtureInterface, ContainerAwareInterface
         $this->getEntityManager()->flush();
         return $task;
     }
+    
     /**
      * @param ObjectManager $manager
      */
