@@ -1,5 +1,5 @@
 <?php
-/
+
 namespace Tests\AppBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Response;

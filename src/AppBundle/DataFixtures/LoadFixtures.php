@@ -83,18 +83,18 @@ class LoadFixtures implements FixtureInterface, ContainerAwareInterface
         $this->getEntityManager()->flush();
         return $task;
     }
-    
+
     /**
      * @param ObjectManager $manager
      */
     public function load(ObjectManager $manager)
     {
         //Users
-        $user = $this->createUserForDemo('user', 'user@example.com', 'ROLE_USER', 'password');
-        $admin = $this->createUserForDemo('admin', 'admin@example.com', 'ROLE_ADMIN', 'password');
-        $user1 = $this->createUserForDemo('Lisy', 'lisy@example.com', 'ROLE_USER', 'password');
-        $user2 = $this->createUserForDemo('Anna', 'anna@example.com', 'ROLE_ADMIN', 'password');
-        $user3 = $this->createUserForDemo('Tally', 'tally@example.com', 'ROLE_USER', 'password');
+        $user = $this->createUserForDemo('user', 'user@example.com', ['ROLE_USER'], 'password');
+        $admin = $this->createUserForDemo('admin', 'admin@example.com', ['ROLE_ADMIN'], 'password');
+        $user1 = $this->createUserForDemo('Lisy', 'lisy@example.com', ['ROLE_USER'], 'password');
+        $user2 = $this->createUserForDemo('Anna', 'anna@example.com', ['ROLE_ADMIN'], 'password');
+        $user3 = $this->createUserForDemo('Tally', 'tally@example.com', ['ROLE_USER'], 'password');
         $manager->persist($user);
         $manager->persist($admin);
         $manager->persist($user1);

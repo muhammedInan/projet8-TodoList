@@ -45,7 +45,7 @@ class User implements UserInterface
      */
     private $tasks;
     /**
-     * @ORM\Column(type="array", nullable=true)
+     * @ORM\Column(type="array")
      * @Assert\NotBlank(message="Choisissez un rôle")
      */
     private $roles;
@@ -92,7 +92,7 @@ class User implements UserInterface
 
     public function getRoles()
     {
-        return  [$this->roles];
+        return  $this->roles;
     }
 
     /**
