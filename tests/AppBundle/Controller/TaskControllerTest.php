@@ -1,11 +1,8 @@
 <?php
-
 namespace Tests\AppBundle\Controller;
-
 class TaskControllerTest extends WebTestCase
 {
     use LogTrait, CreateTrait;
-
     private $client;
     /**
      * {@inheritDoc}
@@ -23,10 +20,8 @@ class TaskControllerTest extends WebTestCase
         $client = static::createClient();
         $crawler = $client->request('GET', '/login');
         $form = $crawler->selectButton('Se connecter')->form();
-
         $form['_username'] = 'Username';
         $form['_password'] = 'pass_1234';
-
         $client->submit($form);
         // Request the route
         $crawler = $client->request('GET', '/tasks/create');
@@ -53,10 +48,8 @@ class TaskControllerTest extends WebTestCase
         $client = static::createClient();
         $crawler = $client->request('GET', '/login');
         $form = $crawler->selectButton('Se connecter')->form();
-
         $form['_username'] = 'Username';
         $form['_password'] = 'pass_1234';
-
         $client->submit($form);
         // Request the route
         $crawler = $client->request('GET', '/tasks/create');
@@ -78,7 +71,6 @@ class TaskControllerTest extends WebTestCase
         // Test
         $this->assertTrue($client->getResponse()->isRedirect());
     }
-
     /**
      * Test de suppression d'une tâche par un administrateur
      */
@@ -117,7 +109,6 @@ class TaskControllerTest extends WebTestCase
         $crawler = $this->client->followRedirect();
         static::assertSame(0, $crawler->filter('html:contains("devez")')->count());
     }
-
     /**
      * {@inheritDoc}
      */

@@ -9,6 +9,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use AppBundle\Form\EditUserType;
 
 class UserController extends Controller
 {
@@ -20,12 +21,13 @@ class UserController extends Controller
      */
     public function listAction()
     {
-        return $this->render('user/list.html.twig', ['users' => $this->getDoctrine()->getRepository('AppBundle:User')->findAll()]);
+        $users = $this->getDoctrine()->getRepository('AppBundle:User')->findAll();
+      
+        return $this->render('user/list.html.twig', ['users' => $users]);
     }
 
     /**
      * @Route("/users/create", name="user_create")
-     
      */
     public function createAction(Request $request)
     {
@@ -52,6 +54,8 @@ class UserController extends Controller
      */
     public function editAction(User $user, Request $request)
     {
+        $form = $this->createForm(EditUserType::class, $user);
+
         $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
 

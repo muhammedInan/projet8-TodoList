@@ -42,7 +42,7 @@ class TaskController extends Controller
             $entityManager->persist($task);
             $entityManager->flush();
             $this->addFlash('success', 'La tâche a été bien été ajoutée.');
-            return $this->redirectToRoute('task_list');
+           return $this->redirectToRoute('task_list');
         }
         return $this->render('task/create.html.twig', ['form' => $form->createView()]);
     }

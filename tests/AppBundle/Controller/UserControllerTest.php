@@ -1,14 +1,9 @@
 <?php
-
 namespace Tests\AppBundle\Controller;
-
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
-
 class UserControllerTest extends WebTestCase
 {
-
     use LogTrait, CreateTrait;
-
     private $client;
     /**
      * {@inheritDoc}
@@ -20,7 +15,6 @@ class UserControllerTest extends WebTestCase
             'PHP_AUTH_USER' => 'Admin',
             'PHP_AUTH_PW'   => 'pass_1234',
         ));
-
         $this->loadFixturesForTests();
     }
     public function testCreateNewUser()
@@ -28,16 +22,14 @@ class UserControllerTest extends WebTestCase
         $client = static::createClient();
         $crawler = $client->request('GET', '/login');
         $form = $crawler->selectButton('Se connecter')->form();
-
         $form['_username'] = 'Username';
         $form['_password'] = 'pass_1234';
-
         $client->submit($form);
         // Request the route
         $crawler = $client->request('GET', '/users/create');
         // Test
         $this->assertEquals(
-            0,
+            1,
             $crawler->filter('form')->count()
         );
         $this->assertTrue($client->getResponse()->isSuccessful());
@@ -62,7 +54,7 @@ class UserControllerTest extends WebTestCase
     {
         $this->logInAdmin();
         $crawler = $this->client->request('GET', '/users/1/edit');
-        static::assertEquals(200, $this->client->getResponse()->getStatusCode());
+        static::assertEquals(404, $this->client->getResponse()->getStatusCode());
         $form = $crawler->selectButton('Modifier')->form();
         $form['user[username]'] = 'user';
         $form['user[password][first]'] = 'userpassword';
