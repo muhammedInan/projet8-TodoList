@@ -15,8 +15,7 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 /*
- * @codeCoverageIgnoreStart
- * @codeCoverageIgnoreEnd
+ * @codeCoverageIgnore
  */
 class EditUserType extends AbstractType
 {

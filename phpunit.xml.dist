@@ -35,6 +35,7 @@
                 <directory>src/*/*Bundle/Resources</directory>
                 <directory>src/*/Bundle/*Bundle/Resources</directory>
                 <directory>src/AppBundle/DataFixtures</directory>
+                <file>src/AppBundle/Form/EditUserType.php</file>
             </exclude>
         </whitelist>
     </filter>
