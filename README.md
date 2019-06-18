@@ -1,5 +1,6 @@
 ToDoList
 Codacy Badge
+https://app.codacy.com/project/muhammedinandev/projet8-TodoList/dashboard
 
 Base du projet #8 : Améliorez un projet existant
 
